@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -30,11 +31,11 @@ func main() {
 
 	logger := log.Default()
 
-	for _, wallet := range cfg.Wallets {
-		setGauge("balance", "Bitcoin balance for network relevant wallet: "+wallet, "elementsd", "wallets", func() float64 {
+	for _, wallet := range strings.Split(cfg.Wallets, ",") {
+		logger.Printf("registering gauge for wallet: " + wallet)
+		setGauge("balance_"+strings.Replace(wallet, "-", "_", -1), "Bitcoin balance for network relevant wallet: "+wallet, "elementsd", "wallets", func() float64 {
 			res, err := elements.GetBalance(cfg.GetElementsURL(wallet), []string{})
 			if err != nil {
-				fmt.Printf("%v", err)
 				panic(err)
 			}
 			fmt.Printf("%v", res)
