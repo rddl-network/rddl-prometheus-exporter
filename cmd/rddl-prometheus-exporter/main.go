@@ -32,7 +32,7 @@ func main() {
 
 	for _, wallet := range strings.Split(cfg.Wallets, ",") {
 		wallet = strings.TrimSpace(wallet)
-		sanitizedWallet := strings.Replace(wallet, "-", "_", -1)
+		sanitizedWallet := strings.ReplaceAll(wallet, "-", "_")
 		logger.Printf("registering gauge for wallet: " + wallet)
 		setGauge("balance_"+sanitizedWallet, "Bitcoin balance for network relevant wallet: "+wallet, "elementsd", "wallets", func() float64 {
 			res, err := elements.GetBalance(cfg.GetElementsURL(wallet), []string{})
