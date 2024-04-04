@@ -20,7 +20,6 @@ func LoadConfig(path string) (cfg *Config, err error) {
 	err = v.ReadInConfig()
 	if err == nil {
 		cfg = GetConfig()
-		cfg.Wallets = v.GetString("wallets")
 		cfg.RPCHost = v.GetString("rpc-host")
 		cfg.RPCUser = v.GetString("rpc-user")
 		cfg.RPCPass = v.GetString("rpc-pass")

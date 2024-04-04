@@ -7,6 +7,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	elementsrpc "github.com/rddl-network/elements-rpc"
 	"github.com/rddl-network/rddl-prometheus-exporter/config"
 	"github.com/rddl-network/rddl-prometheus-exporter/elements"
 )
@@ -29,7 +30,12 @@ func main() {
 
 	logger := log.Default()
 
-	for _, wallet := range strings.Split(cfg.Wallets, ",") {
+	wallets, err := elementsrpc.ListWallets(cfg.GetElementsURL(""), []string{})
+	if err != nil {
+		log.Fatalf("fatal error fetching wallets: %s", err.Error())
+	}
+
+	for _, wallet := range wallets {
 		wallet := strings.TrimSpace(wallet)
 		sanitizedWallet := strings.ReplaceAll(wallet, "-", "_")
 		logger.Printf("registering gauge for wallet: " + wallet)

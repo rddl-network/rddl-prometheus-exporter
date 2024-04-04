@@ -6,7 +6,6 @@ import (
 )
 
 const DefaultConfigTemplate = `
-wallets="{{ .Wallets }}"
 rpc-host="{{ .RPCHost }}"
 rpc-user="{{ .RPCUser }}"
 rpc-pass="{{ .RPCPass }}"
@@ -15,7 +14,6 @@ service-port={{ .ServicePort }}
 `
 
 type Config struct {
-	Wallets     string `mapstructure:"wallets"`
 	RPCHost     string `mapstructure:"rpc-host"`
 	RPCUser     string `mapstructure:"rpc-user"`
 	RPCPass     string `mapstructure:"rpc-pass"`
@@ -31,7 +29,6 @@ var (
 // DefaultConfig returns distribution-service default config
 func DefaultConfig() *Config {
 	return &Config{
-		Wallets:     "wallet1,wallet2",
 		RPCHost:     "localhost:18884",
 		RPCUser:     "user",
 		RPCPass:     "password",
