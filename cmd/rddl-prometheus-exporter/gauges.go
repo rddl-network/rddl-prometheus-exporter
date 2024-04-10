@@ -27,8 +27,9 @@ func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config)
 	for _, unit := range units {
 		unit := unit
 		logger.Print("registering gauge for service unit: " + unit)
-		sanitizedUnit := strings.Split(unit, ".")[0]
-		setGauge("service_active_state_"+sanitizedUnit, "ActiveState for network relevant service: "+sanitizedUnit, "systemd", "units", func() float64 {
+		unitName := strings.Split(unit, ".")[0]
+		sanitizedUnit := strings.ReplaceAll(unitName, "-", "_")
+		setGauge("service_active_state_"+sanitizedUnit, "ActiveState for network relevant service: "+unitName, "systemd", "units", func() float64 {
 			return system.CheckUnitActiveState(ctx, unit)
 		})
 	}
