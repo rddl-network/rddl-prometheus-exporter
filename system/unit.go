@@ -14,11 +14,13 @@ func CheckUnitActiveState(ctx context.Context, unit string) float64 {
 	conn, err := dbus.NewWithContext(ctx)
 	if err != nil {
 		logger.Print(err)
+		return 0
 	}
 
 	unitProps, err := conn.GetUnitPropertiesContext(ctx, unit)
 	if err != nil {
 		logger.Print(err)
+		return 0
 	}
 
 	state, ok := unitProps["ActiveState"]
