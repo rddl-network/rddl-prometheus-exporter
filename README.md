@@ -10,10 +10,10 @@ go run cmd/rddl-prometheus-exporter/*.go
 ## Configuration
 The service needs to be configured via the ```./app.toml``` file or environment variables. The defaults are:
 ```
-rpc-host = 'localhost:18884' // elementsd rpc host
-rpc-pass = 'password'        // elementsd rpc password
-rpc-user = 'user'            // elementsd rpc user
+rpc-host = 'localhost:18884'              // elementsd rpc host
+rpc-pass = 'password'                     // elementsd rpc password
+rpc-user = 'user'                         // elementsd rpc user
 service-bind = 'localhost'
 service-port = 8080
-service-units = ''           // systemd units
+service-units = 'foo.service,bar.service' // systemd units
 ```
