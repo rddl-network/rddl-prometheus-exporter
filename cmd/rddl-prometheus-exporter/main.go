@@ -1,26 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
-	"strings"
 
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	elementsrpc "github.com/rddl-network/elements-rpc"
 	"github.com/rddl-network/rddl-prometheus-exporter/config"
-	"github.com/rddl-network/rddl-prometheus-exporter/elements"
 )
-
-func setGauge(name string, help string, namespace string, subsystem string, callback func() float64) {
-	gaugeFunc := prometheus.NewGaugeFunc(prometheus.GaugeOpts{
-		Namespace: namespace,
-		Subsystem: subsystem,
-		Name:      name,
-		Help:      help,
-	}, callback)
-	prometheus.MustRegister(gaugeFunc)
-}
 
 func main() {
 	cfg, err := config.LoadConfig("./")
@@ -30,25 +17,7 @@ func main() {
 
 	logger := log.Default()
 
-	wallets, err := elementsrpc.ListWallets(cfg.GetElementsURL(""), []string{})
-	if err != nil {
-		log.Fatalf("fatal error fetching wallets: %s", err.Error())
-	}
-
-	for _, wallet := range wallets {
-		wallet := strings.TrimSpace(wallet)
-		sanitizedWallet := strings.ReplaceAll(wallet, "-", "_")
-		logger.Printf("registering gauge for wallet: " + wallet)
-		setGauge("balance_"+sanitizedWallet, "Bitcoin balance for network relevant wallet: "+wallet, "elementsd", "wallets", func() float64 {
-			url := cfg.GetElementsURL(wallet)
-			balance, err := elements.GetWalletBalance(url, wallet)
-			if err != nil {
-				log.Print(err.Error())
-				return 0
-			}
-			return balance
-		})
-	}
+	registerGauges(context.Background(), logger, cfg)
 
 	http.Handle("/metrics", promhttp.Handler())
 	logger.Printf("listening on port: %d", cfg.ServicePort)
