@@ -20,10 +20,12 @@ func LoadConfig(path string) (cfg *Config, err error) {
 	err = v.ReadInConfig()
 	if err == nil {
 		cfg = GetConfig()
-		cfg.Wallets = v.GetStringSlice("wallets")
 		cfg.RPCHost = v.GetString("rpc-host")
 		cfg.RPCUser = v.GetString("rpc-user")
 		cfg.RPCPass = v.GetString("rpc-pass")
+		cfg.ServiceBind = v.GetString("service-bind")
+		cfg.ServicePort = v.GetInt("service-port")
+		cfg.ServiceUnits = v.GetString("service-units")
 		return
 	}
 	log.Println("no config file found.")

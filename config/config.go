@@ -2,25 +2,26 @@ package config
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 )
 
 const DefaultConfigTemplate = `
-wallet="{{ .Wallets }}"
 rpc-host="{{ .RPCHost }}"
 rpc-user="{{ .RPCUser }}"
 rpc-pass="{{ .RPCPass }}"
 service-bind="{{ .ServiceBind }}"
-service-port="{{ .ServicePort }}"
+service-port={{ .ServicePort }}
+service-units="{{ .ServiceUnits }}"
 `
 
 type Config struct {
-	Wallets     []string `mapstructure:"wallets"`
-	RPCHost     string   `mapstructure:"rpc-host"`
-	RPCUser     string   `mapstructure:"rpc-user"`
-	RPCPass     string   `mapstructure:"rpc-pass"`
-	ServiceBind string   `mapstructure:"service-bind"`
-	ServicePort int      `mapstructure:"service-port"`
+	RPCHost      string `mapstructure:"rpc-host"`
+	RPCUser      string `mapstructure:"rpc-user"`
+	RPCPass      string `mapstructure:"rpc-pass"`
+	ServiceBind  string `mapstructure:"service-bind"`
+	ServicePort  int    `mapstructure:"service-port"`
+	ServiceUnits string `mapstructure:"service-units"`
 }
 
 var (
@@ -31,12 +32,12 @@ var (
 // DefaultConfig returns distribution-service default config
 func DefaultConfig() *Config {
 	return &Config{
-		Wallets:     []string{"dao", "pop", "issuerwallet", "early-investor-wallet"},
-		RPCHost:     "localhost:18884",
-		RPCUser:     "user",
-		RPCPass:     "password",
-		ServiceBind: "localhost",
-		ServicePort: 8080,
+		RPCHost:      "localhost:18884",
+		RPCUser:      "user",
+		RPCPass:      "password",
+		ServiceBind:  "localhost",
+		ServicePort:  8080,
+		ServiceUnits: "",
 	}
 }
 
@@ -54,4 +55,8 @@ func (c *Config) GetListenAddr() string {
 func (c *Config) GetElementsURL(wallet string) string {
 	url := fmt.Sprintf("http://%s:%s@%s/wallet/%s", c.RPCUser, c.RPCPass, c.RPCHost, wallet)
 	return url
+}
+
+func (c *Config) GetServiceUnits() []string {
+	return strings.Split(c.ServiceUnits, ",")
 }
