@@ -16,7 +16,7 @@ var client *Client
 func GetClient() *Client {
 	if client == nil {
 		cfg := config.GetConfig()
-		client = newPlanetmintClient(cfg.PlanetmintHost)
+		client = newClient(cfg.PlanetmintHost)
 	}
 	return client
 }
@@ -25,7 +25,7 @@ type Client struct {
 	host string
 }
 
-func newPlanetmintClient(host string) *Client {
+func newClient(host string) *Client {
 	return &Client{host: host}
 }
 
