@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var client *PlanetmintClient
+var client *Client
 
-func GetClient() *PlanetmintClient {
+func GetClient() *Client {
 	if client == nil {
 		cfg := config.GetConfig()
 		client = newPlanetmintClient(cfg.PlanetmintHost)
@@ -21,15 +21,15 @@ func GetClient() *PlanetmintClient {
 	return client
 }
 
-type PlanetmintClient struct {
+type Client struct {
 	host string
 }
 
-func newPlanetmintClient(host string) *PlanetmintClient {
-	return &PlanetmintClient{host: host}
+func newPlanetmintClient(host string) *Client {
+	return &Client{host: host}
 }
 
-func (pmc *PlanetmintClient) GetActiveDeviceCount() (count float64, err error) {
+func (pmc *Client) GetActiveDeviceCount() (count float64, err error) {
 	conn, err := pmc.getGRPCConnection()
 	if err != nil {
 		return
@@ -47,7 +47,7 @@ func (pmc *PlanetmintClient) GetActiveDeviceCount() (count float64, err error) {
 	return float64(response.Count), nil
 }
 
-func (pmc *PlanetmintClient) GetActivatedDeviceCount() (count float64, err error) {
+func (pmc *Client) GetActivatedDeviceCount() (count float64, err error) {
 	conn, err := pmc.getGRPCConnection()
 	if err != nil {
 		return
@@ -65,7 +65,7 @@ func (pmc *PlanetmintClient) GetActivatedDeviceCount() (count float64, err error
 	return float64(response.Count), nil
 }
 
-func (pmc *PlanetmintClient) getGRPCConnection() (conn *grpc.ClientConn, err error) {
+func (pmc *Client) getGRPCConnection() (conn *grpc.ClientConn, err error) {
 	return grpc.Dial(
 		pmc.host,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
