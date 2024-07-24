@@ -56,7 +56,7 @@ func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config)
 	}
 
 	logger.Print("registering gauge for active devices")
-	setGauge("active_count", "Devices actively connected to MQTT for PoP participation", "planetmint-god", "devices", func() float64 {
+	setGauge("active_count", "Devices actively connected to MQTT for PoP participation: ", "planetmint_god", "devices", func() float64 {
 		count, err := planetmint.GetActiveDeviceCount()
 		if err != nil {
 			log.Print(err.Error())
@@ -66,7 +66,7 @@ func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config)
 	})
 
 	logger.Print("registering gauge for activated devices")
-	setGauge("activated_count", "Devices activated on Planetmint for use on network", "planetmint-god", "devices", func() float64 {
+	setGauge("activated_count", "Devices activated on Planetmint for use on network: ", "planetmint_god", "devices", func() float64 {
 		count, err := planetmint.GetActivatedDeviceCount()
 		if err != nil {
 			log.Print(err.Error())
