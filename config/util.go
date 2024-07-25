@@ -26,6 +26,7 @@ func LoadConfig(path string) (cfg *Config, err error) {
 		cfg.ServiceBind = v.GetString("service-bind")
 		cfg.ServicePort = v.GetInt("service-port")
 		cfg.ServiceUnits = v.GetString("service-units")
+		cfg.PlanetmintHost = v.GetString("planetmint-host")
 		return
 	}
 	log.Println("no config file found.")

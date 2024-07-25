@@ -9,6 +9,7 @@ import (
 	elementsrpc "github.com/rddl-network/elements-rpc"
 	"github.com/rddl-network/rddl-prometheus-exporter/config"
 	"github.com/rddl-network/rddl-prometheus-exporter/elements"
+	"github.com/rddl-network/rddl-prometheus-exporter/planetmint"
 	"github.com/rddl-network/rddl-prometheus-exporter/system"
 )
 
@@ -53,4 +54,24 @@ func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config)
 			return balance
 		})
 	}
+
+	logger.Print("registering gauge for active devices")
+	setGauge("active_count", "Devices actively connected to MQTT for PoP participation: ", "planetmint_god", "devices", func() float64 {
+		count, err := planetmint.GetActiveDeviceCount()
+		if err != nil {
+			log.Print(err.Error())
+			return 0
+		}
+		return count
+	})
+
+	logger.Print("registering gauge for activated devices")
+	setGauge("activated_count", "Devices activated on Planetmint for use on network: ", "planetmint_god", "devices", func() float64 {
+		count, err := planetmint.GetActivatedDeviceCount()
+		if err != nil {
+			log.Print(err.Error())
+			return 0
+		}
+		return count
+	})
 }

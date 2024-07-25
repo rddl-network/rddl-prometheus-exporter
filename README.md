@@ -16,4 +16,5 @@ rpc-user = 'user'                         // elementsd rpc user
 service-bind = 'localhost'
 service-port = 8080
 service-units = 'foo.service,bar.service' // systemd units
+planetmint-host = '127.0.0.1:9090'        // planetmint host for fetching info
 ```
