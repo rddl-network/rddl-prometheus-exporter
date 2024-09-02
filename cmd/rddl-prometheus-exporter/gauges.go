@@ -43,7 +43,7 @@ func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config)
 	for _, wallet := range wallets {
 		wallet := strings.TrimSpace(wallet)
 		sanitizedWallet := strings.ReplaceAll(wallet, "-", "_")
-		logger.Printf("registering gauge for wallet: " + wallet)
+		logger.Print("registering gauge for wallet: " + wallet)
 		setGauge("balance_"+sanitizedWallet, "Bitcoin balance for network relevant wallet: "+wallet, "elementsd", "wallets", func() float64 {
 			url := cfg.GetElementsURL(wallet)
 			balance, err := elements.GetWalletBalance(url, wallet)
