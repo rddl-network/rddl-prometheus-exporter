@@ -5,7 +5,6 @@ go 1.21.5
 require (
 	github.com/coreos/go-systemd/v22 v22.3.2
 	github.com/cosmos/cosmos-sdk v0.47.8
-	github.com/planetmint/planetmint-go v0.11.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rddl-network/elements-rpc v1.1.0
 	github.com/spf13/viper v1.16.0
@@ -89,6 +88,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/petermattis/goid v0.0.0-20230317030725-371a4b8eda08 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/planetmint/planetmint-go v0.11.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect

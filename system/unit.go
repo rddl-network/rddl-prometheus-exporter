@@ -14,7 +14,9 @@ func CheckUnitActiveState(ctx context.Context, unit string) float64 {
 	conn, err := dbus.NewWithContext(ctx)
 	if err != nil {
 		logger.Print(err)
-		conn.Close()
+		if conn != nil {
+			conn.Close()
+		}
 		return 0
 	}
 	defer conn.Close()
