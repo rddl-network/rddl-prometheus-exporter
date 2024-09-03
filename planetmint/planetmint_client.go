@@ -34,6 +34,7 @@ func (pmc *Client) GetActiveDeviceCount() (count float64, err error) {
 	if err != nil {
 		return
 	}
+	defer conn.Close()
 
 	machineClient := types.NewQueryClient(conn)
 	response, err := machineClient.ActiveTrustAnchorCount(
@@ -52,6 +53,7 @@ func (pmc *Client) GetActivatedDeviceCount() (count float64, err error) {
 	if err != nil {
 		return
 	}
+	defer conn.Close()
 
 	machineClient := types.NewQueryClient(conn)
 	response, err := machineClient.ActivatedTrustAnchorCount(
