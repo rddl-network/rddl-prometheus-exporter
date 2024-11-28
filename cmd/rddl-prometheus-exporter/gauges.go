@@ -26,7 +26,6 @@ func setGauge(name string, help string, namespace string, subsystem string, call
 func registerGauges(ctx context.Context, logger *log.Logger, cfg *config.Config) {
 	units := cfg.GetServiceUnits()
 	for _, unit := range units {
-		unit := unit
 		logger.Print("registering gauge for service unit: " + unit)
 		unitName := strings.Split(unit, ".")[0]
 		sanitizedUnit := strings.ReplaceAll(unitName, "-", "_")
